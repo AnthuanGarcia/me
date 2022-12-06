@@ -1,0 +1,211 @@
+//import { RawShaderMaterial, ShaderMaterial } from 'three';
+import { vertexPlane } from '../../assets/vertexPlane.js';
+import { fragmentShader } from '../../assets/fragmentShader.js';
+import { D2R, FrustrumSize } from '../utils/constants.js';
+
+function createCube() {
+
+    //const geom = THREE.
+    const geom = new THREE.PlaneGeometry(1, 1);
+    const mate = new THREE.MeshPhongMaterial({color: 0XFF00FF});
+
+    const mesh = new THREE.Mesh(geom, mate);
+
+    return mesh;
+
+}
+
+class Plane {
+
+    constructor(world, width = 1, height = 1, rectHtml) {
+
+        this.canvasWidth = world._renderer.domElement.clientWidth;
+        this.canvasHeight = world._renderer.domElement.clientHeight;
+
+        this.scene = world._scene;
+        this.camera = world._camera;
+
+        this.width = width;
+        this.height = height;
+
+        this.world = world;
+        this.isFullScreen = false;
+
+        this.rect = rectHtml;
+
+        this.uniforms = {
+            u_time: { value: 0 },
+            u_size: { value: 0 },//{ value: new THREE.Vector4(1, 1, 1, 1) },
+            u_viewSize: { value: new THREE.Vector2(1, 1) },
+            u_progress: { value: 0 },
+            u_meshScale: { value: new THREE.Vector2(1, 1) },
+            u_resolution: { value: new THREE.Vector2(0, 0) },
+            u_meshPosition: { value: new THREE.Vector2(0, 0) },
+        };
+
+    }
+
+    UpdateViewSize() {
+
+        const viewSize = this.getViewSize();
+
+        this.uniforms.u_viewSize.value.x = viewSize.width;
+        this.uniforms.u_viewSize.value.y = viewSize.height;
+
+    }
+
+    setMesh() {
+
+        this.UpdateViewSize();
+
+        const geom = new THREE.PlaneGeometry(this.width, this.height);
+        const mate = new THREE.ShaderMaterial({
+            vertexShader: vertexPlane,
+            fragmentShader: fragmentShader,
+            uniforms: this.uniforms
+        });
+    
+        this.mesh = new THREE.Mesh(geom, mate);
+        this.setMeshFromScreen();
+
+    }
+
+    setMeshFromScreen() {
+        const rect = this.rect.getBoundingClientRect();
+        const viewSize = this.getViewSize();
+
+        const widthViewUnit = (rect.width * viewSize.width) / window.innerWidth;
+        const heightViewUnit = (rect.height * viewSize.height) / window.innerHeight;
+
+        const xViewUnit =
+        (rect.left * viewSize.width) / window.innerWidth - viewSize.width / 2;
+
+        const yViewUnit =
+        (rect.top * viewSize.height) / window.innerHeight - viewSize.height / 2;
+
+        this.mesh.scale.x = widthViewUnit;
+        this.mesh.scale.y = heightViewUnit;
+
+        let x = xViewUnit + widthViewUnit / 2;
+        let y = -yViewUnit - heightViewUnit / 2;
+
+        // geometry.translate(x, y, 0);
+        this.mesh.position.x = x;
+        this.mesh.position.y = y;
+
+        this.uniforms.u_meshPosition.value.x = x / widthViewUnit;
+        this.uniforms.u_meshPosition.value.y = y / heightViewUnit;
+
+        this.uniforms.u_meshScale.value.x = widthViewUnit;
+        this.uniforms.u_meshScale.value.y = heightViewUnit;
+    }
+
+    setInteraction() {
+
+        const rayCaster = new THREE.Raycaster();
+
+        document.addEventListener("click", (e) => {
+
+            const mouse = new THREE.Vector2(
+                ( e.clientX  / this.canvasWidth ) * 2 - 1,
+                -( e.clientY / this.canvasHeight ) * 2 + 1
+            );
+    
+            rayCaster.setFromCamera(mouse, this.camera);
+    
+            const intersects = rayCaster.intersectObject(this.mesh);
+
+            if (intersects.length > 0 && !this.world.isFullScreen) {
+
+                /*const pixWidth = new THREE.Vector3(
+                    this.mesh.position.x - 1 * 0.5,
+                    this.mesh.position.y - 1 * 0.5,
+                    this.mesh.position.z
+                );
+
+                pixWidth.project(this.camera);
+
+                const planePixWidth = new THREE.Vector2(
+                    (1 + pixWidth.x) * 0.5 * this.canvasWidth,
+                    (1 - pixWidth.y) * 0.5 * this.canvasHeight
+                );
+                
+                const viewSize = this.getViewSize();
+
+                const widhtPlane = (planePixWidth.x * viewSize.width) / this.canvasWidth;
+                const heightPlane = (planePixWidth.y * viewSize.height) / this.canvasHeight;*/
+
+                /*const viewSize = this.getViewSize();
+
+                console.log(viewSize);
+
+                const xUnit = this.mesh.position.x - viewSize.width * 0.5;
+                const yUnit = this.mesh.position.y - viewSize.height * 0.5;
+
+                const x = xUnit + this.width * 0.5;
+                const y = -yUnit - this.height * 0.5;
+
+                this.mesh.position.x = x;
+                this.mesh.position.y = y;*/
+
+                /*this.uniforms.u_meshPosition.value.x = this.mesh.position.x;
+                this.uniforms.u_meshPosition.value.y = this.mesh.position.y;
+
+                this.uniforms.u_meshScale.value.x = this.width;
+                this.uniforms.u_meshScale.value.y = this.height;*/
+
+                //this.setMeshFromScreen();
+
+                this.world.isFullScreen = true;
+                this.isFullScreen = true;
+                
+                this.fullScreen();
+                
+            }
+
+        }, false);
+    
+    }
+
+    setPosition(vector) {
+
+        this.mesh.position.set(vector);
+
+    }
+
+    exitFullScreen() {
+
+        gsap
+        .timeline({ defaults: { duration: 1.2, ease: "expo.inOut" } })
+        .to(this.uniforms.u_progress, {
+            value: 0
+        });
+
+        this.isFullScreen = false;
+
+    }
+
+    fullScreen() {
+
+        gsap
+        .timeline({ defaults: { duration: 1.2, ease: "expo.inOut" } })
+        .to(this.uniforms.u_progress, {
+            value: 1
+        });
+
+    }
+
+    getViewSize() {
+
+        //const fov = this.camera.fov * D2R;
+        //const height = Math.abs(this.camera.position.z * Math.tan(fov * 0.5) * 2);
+
+        return { 
+            width: this.camera.right * 2,
+            height: this.camera.top * 2
+        };
+    }
+
+}
+
+export { createCube, Plane } 
