@@ -21,7 +21,7 @@ class World {
         Array.from(items.children)
         .forEach((e) => {
 
-            const plane = new Plane(this, 1, 1, e);
+            const plane = new Plane(this, e);
 
             plane.setMesh();
             plane.setInteraction();

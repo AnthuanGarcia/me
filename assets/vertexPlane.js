@@ -1,6 +1,5 @@
 export const vertexPlane = `
 uniform float u_time;
-uniform float u_size;
 uniform vec2 u_viewSize;
 uniform float u_progress;
 uniform vec2 u_meshScale;

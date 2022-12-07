@@ -17,7 +17,7 @@ function createCube() {
 
 class Plane {
 
-    constructor(world, width = 1, height = 1, rectHtml) {
+    constructor(world, rectHtml, percentage = 0.3333, width = 1, height = 1) {
 
         this.canvasWidth = world._renderer.domElement.clientWidth;
         this.canvasHeight = world._renderer.domElement.clientHeight;
@@ -32,10 +32,12 @@ class Plane {
         this.isFullScreen = false;
 
         this.rect = rectHtml;
+        this.percentage = percentage;
 
         this.uniforms = {
             u_time: { value: 0 },
             u_size: { value: 0 },//{ value: new THREE.Vector4(1, 1, 1, 1) },
+            u_perScreen: { value: percentage },
             u_viewSize: { value: new THREE.Vector2(1, 1) },
             u_progress: { value: 0 },
             u_meshScale: { value: new THREE.Vector2(1, 1) },
