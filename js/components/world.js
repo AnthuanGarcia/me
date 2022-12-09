@@ -3,6 +3,7 @@ import { createCamera } from './camera.js';
 import { createRenderer } from './renderer.js';
 import { Plane } from './cube.js';
 import { Resizer } from './resizer.js';
+import { FrustrumSize } from '../utils/constants.js';
 
 class World {
 
@@ -14,14 +15,20 @@ class World {
         this._planes = [];
 
         this.isFullScreen = false;
-    
+        this.isAnimating = false;
+        this.items = items;
+
+        this.valScroll = 0.0;
+        
+        this.canvasWidth = this._renderer.domElement.clientWidth;
+        this.canvasHeight = this._renderer.domElement.clientHeight;
         //loop = new Loop(camera, scene, renderer, uniforms);
         //container.append(renderer.domElement);
         
-        Array.from(items.children)
-        .forEach((e) => {
+        Array.from(this.items.children)
+        .forEach((e, i) => {
 
-            const plane = new Plane(this, e);
+            const plane = new Plane(this, e, i);
 
             plane.setMesh();
             plane.setInteraction();
@@ -66,8 +73,31 @@ class World {
         //this._planes.push(plane /*plane2, plane3*/);
     
         //this._scene.add(plane.mesh /*plane2.mesh, plane3.mesh*/);
+
+        window.addEventListener("scroll", (e) => {
+
+            
+            /*this._planes.forEach((p) => {
+
+                if (!this.isAnimating) {
+
+                    //p.rectHtml = this.items.children[i];
+                    //p.setMeshFromScreen();
+
+                }
+            });*/
+
+            this.setItems();
+
+        });
+
+        window.addEventListener('resize', () => {
+            
+            this.setSize();
+
+        });
     
-        this._resizer = new Resizer(this._camera, this._renderer);
+        //this._resizer = new Resizer(this._camera, this._renderer, this._planes);
 
         console.log("World is runnig");
     
@@ -89,7 +119,12 @@ class World {
 
         }*/
 
-        this._renderer.render(this._scene, this._camera);
+        this._renderer.setAnimationLoop(() => {
+
+
+            this._renderer.render(this._scene, this._camera);
+        });
+
 
     }
     
@@ -101,17 +136,105 @@ class World {
         
     }
 
+    shrinkPlanes() {
+
+        this._planes.forEach(p => {
+
+            if (!p.isFullScreen) 
+                p.shrinkHeight();
+
+        });
+
+    }
+
+    expandPlanes() {
+
+        this._planes.forEach(p => {
+
+            if (p.isShrinked) 
+                p.expandHeight();
+                
+        });
+
+    }
+
     closePlane() {
 
         this._planes.forEach((plane) => {
 
-            if (this.isFullScreen && plane.isFullScreen)
+            if (this.isFullScreen && plane.isFullScreen) {
+
                 plane.exitFullScreen();
+
+            }
 
         })
 
         this.isFullScreen = false;
 
+    }
+
+    reloadIndex() {
+
+        this.items = document.getElementById("items");
+
+    }
+
+    setItems() {
+
+        if (this.items) {
+
+            this._planes.forEach((p, i) => {
+
+                p.rect = this.items.children[i];
+                p.setMeshFromScreen();
+
+            });
+
+        }
+
+    }
+
+    setScroll() {
+
+        this.valScroll = window.scrollY;
+
+    }
+
+    setSize() {
+
+        //const canvas = renderer.domElement;
+
+        const aspect = window.innerWidth / window.innerHeight;
+
+        this._camera.right = FrustrumSize * aspect / 2;
+        this._camera.left = FrustrumSize * aspect / -2;
+        //camera.top = FrustrumSize * aspect / 2;
+        //camera.bottom = FrustrumSize * aspect / -2;
+
+        /*planes.forEach(plane => {
+
+            plane.setMeshFromScreen();
+            
+        });*/
+
+        this.setItems();
+
+        // update the size of the renderer AND the canvas
+        this._renderer.setSize(window.innerWidth, window.innerHeight);
+
+        this.canvasWidth = this._renderer.domElement.clientWidth;
+        this.canvasHeight = this._renderer.domElement.clientHeight;
+
+        // Set the camera's aspect ratio
+        //camera.aspect = window.innerWidth / window.innerHeight;
+    
+        // update the camera's frustum
+        this._camera.updateProjectionMatrix();
+        
+        // set the pixel ratio (for mobile devices)
+        this._renderer.setPixelRatio(window.devicePixelRatio);
+    
     }
     
 }

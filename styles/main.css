@@ -4,8 +4,13 @@ body {
     font-family: Helvetica, sans-serif;
 }
 
+.noclicks {
+    pointer-events: none;
+}
+
 #webgl {
     position: fixed;
+    display: block;
     top: 0;
     left: 0;
     width: 100%;
@@ -104,5 +109,55 @@ body {
         opacity: 1;
         -webkit-transform: none;
         transform: none;
+    }
+}
+
+@media (max-width: 800px) {
+
+    .aboutme {
+
+        grid-column: 1;
+        grid-row: 1;
+    
+        width: 9.5rem;
+        height: 5rem;
+    
+        margin-left: 5rem;
+        margin-right: 1rem;
+        margin-bottom: 0;
+    
+    }
+    
+    .projects {
+    
+        grid-column: 1;
+        grid-row: 2;
+    
+        width: 11rem;
+        height: 6.5rem;
+        margin-left: 0;
+    
+    }
+    
+    .experience {
+    
+        grid-column: 1;
+        grid-row: 3;
+    
+        width: 12.5rem;
+        height: 6rem;
+        margin-left: 3rem;
+    
+    }
+    
+    .contact {
+    
+        grid-column: 1;
+        grid-row: 4;
+    
+        width: 9rem;
+        height: 6rem;
+        margin-left: 3rem;
+    
     }
 }

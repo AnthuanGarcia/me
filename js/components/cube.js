@@ -17,10 +17,10 @@ function createCube() {
 
 class Plane {
 
-    constructor(world, rectHtml, percentage = 0.3333, width = 1, height = 1) {
+    constructor(world, rectHtml, i, percentage = 0.3333, width = 1, height = 1) {
 
-        this.canvasWidth = world._renderer.domElement.clientWidth;
-        this.canvasHeight = world._renderer.domElement.clientHeight;
+        //this.canvasWidth = world._renderer.domElement.clientWidth;
+        //this.canvasHeight = world._renderer.domElement.clientHeight;
 
         this.scene = world._scene;
         this.camera = world._camera;
@@ -32,7 +32,11 @@ class Plane {
         this.isFullScreen = false;
 
         this.rect = rectHtml;
+        this.idx = i;
         this.percentage = percentage;
+
+        this.lastHeight = 0.0;
+        this.isShrinked = false;
 
         this.uniforms = {
             u_time: { value: 0 },
@@ -58,8 +62,6 @@ class Plane {
 
     setMesh() {
 
-        this.UpdateViewSize();
-
         const geom = new THREE.PlaneGeometry(this.width, this.height);
         const mate = new THREE.ShaderMaterial({
             vertexShader: vertexPlane,
@@ -73,6 +75,11 @@ class Plane {
     }
 
     setMeshFromScreen() {
+
+        if (this.world.isFullScreen) return;
+
+        this.UpdateViewSize();
+
         const rect = this.rect.getBoundingClientRect();
         const viewSize = this.getViewSize();
 
@@ -109,8 +116,8 @@ class Plane {
         document.addEventListener("click", (e) => {
 
             const mouse = new THREE.Vector2(
-                ( e.clientX  / this.canvasWidth ) * 2 - 1,
-                -( e.clientY / this.canvasHeight ) * 2 + 1
+                ( e.clientX  / this.world.canvasWidth ) * 2 - 1,
+                -( e.clientY / this.world.canvasHeight ) * 2 + 1
             );
     
             rayCaster.setFromCamera(mouse, this.camera);
@@ -157,7 +164,7 @@ class Plane {
                 this.uniforms.u_meshScale.value.y = this.height;*/
 
                 //this.setMeshFromScreen();
-
+                
                 this.world.isFullScreen = true;
                 this.isFullScreen = true;
                 
@@ -175,12 +182,41 @@ class Plane {
 
     }
 
+    shrinkHeight() {
+
+        this.lastHeight = this.mesh.scale.y;
+        this.isShrinked = true;
+
+        gsap
+        .timeline({ defaults: { duration: 0.8, ease: "expo.inOut" } })
+        .to(this.mesh.scale, {
+            y: 0
+        })
+
+    }
+
+    expandHeight() {
+
+        this.isShrinked = false;
+
+        gsap
+        .timeline({ defaults: { duration: 0.8, ease: "expo.inOut", delay: 0.3 } })
+        .to(this.mesh.scale, {
+            y: this.lastHeight
+        })
+
+    }
+
     exitFullScreen() {
 
         gsap
         .timeline({ defaults: { duration: 1.2, ease: "expo.inOut" } })
         .to(this.uniforms.u_progress, {
-            value: 0
+            value: 0,
+            //onComplete: () => this.setMeshFromScreen(),
+            onStart: () => this.world.isAnimating = true,
+            onComplete: () => this.world.isAnimating = false,
+
         });
 
         this.isFullScreen = false;
@@ -192,7 +228,10 @@ class Plane {
         gsap
         .timeline({ defaults: { duration: 1.2, ease: "expo.inOut" } })
         .to(this.uniforms.u_progress, {
-            value: 1
+            value: 1,
+            //onComplete: () => this.setMeshFromScreen()
+            onStart: () => this.world.isAnimating = true,
+            onComplete: () => this.world.isAnimating = false,
         });
 
     }

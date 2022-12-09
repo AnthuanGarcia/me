@@ -2,13 +2,13 @@ import { FrustrumSize } from '../utils/constants.js';
 
 class Resizer {
 
-    constructor(camera, renderer) {
+    constructor(camera, renderer, planes) {
 
-        this.setSize(camera, renderer);
+        this.setSize(camera, renderer, planes);
 
         window.addEventListener('resize', () => {
             
-            this.setSize(camera, renderer);
+            this.setSize(camera, renderer, planes);
             this.onResize();
 
         });
@@ -19,7 +19,7 @@ class Resizer {
 
     }
 
-    setSize(camera, renderer) {
+    setSize(camera, renderer, planes) {
 
         //const canvas = renderer.domElement;
 
@@ -27,6 +27,16 @@ class Resizer {
 
         camera.right = FrustrumSize * aspect / 2;
         camera.left = FrustrumSize * aspect / -2;
+        //camera.top = FrustrumSize * aspect / 2;
+        //camera.bottom = FrustrumSize * aspect / -2;
+
+        /*planes.forEach(plane => {
+
+            plane.setMeshFromScreen();
+            
+        });*/
+
+        
 
         // update the size of the renderer AND the canvas
         renderer.setSize(window.innerWidth, window.innerHeight);
