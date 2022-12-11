@@ -2,6 +2,12 @@ body {
     margin: 0;
     padding: 0;
     font-family: Helvetica, sans-serif;
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none; 
+}
+
+::-webkit-scrollbar { 
+    display: none;  /* Safari and Chrome */
 }
 
 .noclicks {
@@ -16,7 +22,28 @@ body {
     width: 100%;
     height: 100%;
     pointer-events: none;
+    z-index: -5;
+}
+
+.main {
+    width: 100%;
+    height: 100%;
+}
+
+/* --- Index --- */
+
+.nameme {
+
+    font-size: 9rem;
+    pointer-events: none;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -110%);
     z-index: -1;
+    background-clip: text;
 }
 
 #items {
@@ -32,7 +59,52 @@ body {
 .card {
 
     margin: 2rem;
+    text-decoration: none;
+    color: black;
 
+}
+
+.card-title {
+    position: relative;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.card:hover .card-inside {
+    display: block;
+    transform: translate(0, 0);
+    /*animation: reveal 0.85s cubic-bezier(0.77, 0, 0.175, 1) 0.5s;*/
+}
+
+.card-inside {
+
+    display: block;
+    text-align: center;
+    font-weight: bold;
+    font-size: 4rem;
+    transform: translate(0, 100%);
+    transition: transform 0.5s cubic-bezier(0.77, 0, 0.175, 1) 0s;
+
+}
+
+.title-aboutme {
+    top: 35%;
+    left: 40%;
+}
+
+.title-experience {
+    top: 40%;
+    right: 35%;
+}
+
+.title-projects {
+    top: 40%;
+    right: 30%;
+}
+
+.title-contact {
+    top: 35%;
+    left: 32%;
 }
 
 .aboutme {
@@ -81,6 +153,48 @@ body {
     margin-left: 3rem;
 
 }
+/* ------------- */
+
+/* --- About --- */
+.title {
+    overflow: hidden;
+}
+
+.title span {
+
+    display: block;
+    opacity: 0;
+    animation: reveal 1.5s cubic-bezier(0.77, 0, 0.175, 1) 0.5s;
+    animation-fill-mode: forwards;
+    -webkit-animation-fill-mode: forwards;
+
+    /*display: block;
+    opacity: 0;
+    animation: reveal 1.5s cubic-bezier(0.77, 0, 0.175, 1) 0.5s;*/
+}
+
+/*
+.card-title:hover {
+    display: block;
+}
+
+.card-title:hover span {
+    display: block;
+    animation: reveal 0.75s cubic-bezier(0.77, 0, 0.175, 1) 0.5s;
+}
+*/
+@keyframes reveal {
+    0% {
+        transform: translate(0,100%);
+    }
+    10% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 1;
+        transform: translate(0, 0);
+    }
+}
 
 .principal {
 
@@ -89,14 +203,8 @@ body {
 }
 
 .para {
-    font-size: 1.4em;
-    width: 50%;
-    top: 10%;
-    left: 30%;
-    margin-top: 0;
-    margin-bottom: 0;
-    /*position: absolute;*/
-    animation: animate 1.75s ease-in-out ;
+    width: 30%;
+    font-size: 1.5em;
 }
 
 @keyframes animate {
@@ -111,6 +219,18 @@ body {
         transform: none;
     }
 }
+/* ------------- */
+
+/* -- Projects -- */
+
+.head-projs {
+
+    font-size: 2rem;
+    font-weight: bold;
+
+}
+
+/* -------------- */
 
 @media (max-width: 800px) {
 
@@ -144,7 +264,7 @@ body {
         grid-column: 1;
         grid-row: 3;
     
-        width: 12.5rem;
+        width: 13.25rem;
         height: 6rem;
         margin-left: 3rem;
     
@@ -158,6 +278,17 @@ body {
         width: 9rem;
         height: 6rem;
         margin-left: 3rem;
+    
+    }
+
+    .para {
+        width: 60%;
+        font-size: 1.5em;
+    }
+
+    .card-inside {
+
+        font-size: 2.5rem;
     
     }
 }
