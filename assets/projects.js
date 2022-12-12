@@ -55,7 +55,7 @@ export const Projects = [
 	{
 		"title": "Bag Guy",
 		"langs": [
-			"Csharp",
+			"C#",
 			"Unity"
 		],
 		"desc": "Bag Guy es mi primer videojuego, es un plataformas sencillo basado en un personaje con una bolsa de papel en la cabeza, el juego principalmente lo desarrolle para probar de primera el desarrollo de videojuegos, actualmente el juego esta publicado en Itch.io.",

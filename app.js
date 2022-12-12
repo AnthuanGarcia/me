@@ -1,6 +1,6 @@
 import { World } from './js/components/world.js';
 import { ReplaceBody } from './js/utils/replace.js';
-import { Projects } from './assets/projects.js';
+import { LoadProjects } from './js/loadProjects.js';
 
 const canvas = document.getElementById("webgl");
 const items = document.getElementById("items");
@@ -12,7 +12,7 @@ gsap.ticker.fps(50);*/
 
 barba.init({
     views: [{
-        namespace: 'about',
+        namespace: 'about-page',
         /*beforeLeave(data) {
             //world.closePlane();
             //world.expandPlanes();
@@ -23,24 +23,10 @@ barba.init({
         },*/
     },
     {
-        namespace: 'projects',
+        namespace: 'projects-page',
         beforeEnter(data) {
 
-            /*const cont = document.getElementsByClassName("principal")[0];
-
-            Projects.forEach(p => {
-    
-                const title = document.createElement("p");
-                title.classList.add("title");
-    
-                const innerTitle = document.createElement("span");
-                innerTitle.classList.add("head-projs");
-                innerTitle.innerText = p.title;
-    
-                title.appendChild(innerTitle);
-                cont.appendChild(title);
-    
-            });*/
+            LoadProjects();
 
         }
     }

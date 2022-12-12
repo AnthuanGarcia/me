@@ -30,6 +30,101 @@ body {
     height: 100%;
 }
 
+.wrapper-cont {
+    display: flex;
+}
+
+.controls {
+    display: flex;
+    width: 25%;
+    flex-direction: column;
+}
+
+.main-title {
+    margin-top: 1.5rem;
+    margin-bottom: 0rem;
+    cursor: pointer;
+    width: fit-content;
+}
+
+.line {
+    border-top: 2px solid black;
+    width: 0%;
+    position: relative;
+    transition: width 0.5s;
+}
+
+.main-title:hover > div {
+    width: 100%;
+}
+
+/*#i_1:checked ~ .wrapper-cont .line1,
+#i_2:checked ~ .wrapper-cont .line2,
+#i_3:checked ~ .wrapper-cont .line3 {
+    width: 100%;
+}*/
+
+.img-proj {
+    max-width: 15rem;
+    max-height: 15rem;
+}
+  
+.slide {
+    width: 0;
+    height: 0;
+    left: 0;
+    top: 0;
+    padding: 0;
+    margin: 0;
+}
+
+.cont-slides {
+    padding: 0;
+    margin: 0;
+}
+  
+.content {
+    width: 50vw;
+    /*height: 100%; this is optional if you want every slide to have same height as the highest one */
+}
+
+.content {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .6s;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.inp {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    left: 0;
+    top: 0;
+    margin: 0;
+    position: absolute;
+}
+
+/*#i_1:checked ~ .wrapper-cont .content1,
+#i_2:checked ~ .wrapper-cont .content2,
+#i_3:checked ~ .wrapper-cont .content3 {
+  opacity: 1;
+  pointer-events: auto;
+}*/
+
+.open-imgs {
+    text-decoration: none;
+    color: black;
+    transition: color 1.5s;
+    font-size: 2rem;
+    margin: 0.5rem;
+}
+
+.open-imgs:hover {
+    color: blue;
+}
+
 /* --- Index --- */
 
 .nameme {
@@ -187,7 +282,7 @@ body {
     0% {
         transform: translate(0,100%);
     }
-    10% {
+    30% {
         opacity: 1;
     }
     100% {
