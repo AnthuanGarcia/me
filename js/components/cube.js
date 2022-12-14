@@ -1,23 +1,11 @@
 //import { RawShaderMaterial, ShaderMaterial } from 'three';
 import { vertexPlane } from '../../assets/vertexPlane.js';
-import { fragmentShader } from '../../assets/fragmentShader.js';
+import { FragmentShaders, GlobalUniforms } from '../../assets/fragmentShader.js';
 import { D2R, FrustrumSize } from '../utils/constants.js';
-
-function createCube() {
-
-    //const geom = THREE.
-    const geom = new THREE.PlaneGeometry(1, 1);
-    const mate = new THREE.MeshPhongMaterial({color: 0XFF00FF});
-
-    const mesh = new THREE.Mesh(geom, mate);
-
-    return mesh;
-
-}
 
 class Plane {
 
-    constructor(world, rectHtml, i, percentage = 0.3333, width = 1, height = 1) {
+    constructor(world, rectHtml, i, percentage = 0.5, width = 1, height = 1) {
 
         //this.canvasWidth = world._renderer.domElement.clientWidth;
         //this.canvasHeight = world._renderer.domElement.clientHeight;
@@ -32,20 +20,20 @@ class Plane {
         this.isFullScreen = false;
 
         this.rect = rectHtml;
-        this.idx = i;
         this.percentage = percentage;
 
         this.lastHeight = 0.0;
         this.isShrinked = false;
 
+        this.idx = i;
+
         this.uniforms = {
-            u_time: { value: 0 },
-            u_size: { value: 0 },//{ value: new THREE.Vector4(1, 1, 1, 1) },
+            //u_time: { value: 0 },
             u_perScreen: { value: percentage },
             u_viewSize: { value: new THREE.Vector2(1, 1) },
             u_progress: { value: 0 },
             u_meshScale: { value: new THREE.Vector2(1, 1) },
-            u_resolution: { value: new THREE.Vector2(0, 0) },
+            //u_resolution: { value: new THREE.Vector2(0, 0) },
             u_meshPosition: { value: new THREE.Vector2(0, 0) },
         };
 
@@ -65,9 +53,13 @@ class Plane {
         const geom = new THREE.PlaneGeometry(this.width, this.height);
         const mate = new THREE.ShaderMaterial({
             vertexShader: vertexPlane,
-            fragmentShader: fragmentShader,
+            fragmentShader: FragmentShaders[this.idx],
             uniforms: this.uniforms
         });
+
+        mate.uniforms.u_time = GlobalUniforms.u_time;
+        mate.uniforms.u_resolution = GlobalUniforms.u_resolution;
+        mate.uniforms.u_mouse = GlobalUniforms.u_mouse;
     
         this.mesh = new THREE.Mesh(geom, mate);
         this.setMeshFromScreen();
@@ -165,7 +157,7 @@ class Plane {
 
                 //this.setMeshFromScreen();
                 
-                this.world.isFullScreen = true;
+                //this.world.isFullScreen = true;
                 this.isFullScreen = true;
                 
                 this.fullScreen();
@@ -215,7 +207,10 @@ class Plane {
             value: 0,
             //onComplete: () => this.setMeshFromScreen(),
             onStart: () => this.world.isAnimating = true,
-            onComplete: () => this.world.isAnimating = false,
+            onComplete: () => {
+                this.world.isAnimating = false;
+                this.mesh.position.z = 0;
+            },
 
         });
 
@@ -230,7 +225,10 @@ class Plane {
         .to(this.uniforms.u_progress, {
             value: 1,
             //onComplete: () => this.setMeshFromScreen()
-            onStart: () => this.world.isAnimating = true,
+            onStart: () => {
+                this.world.isAnimating = true;
+                this.mesh.position.z = 2;
+            },
             onComplete: () => this.world.isAnimating = false,
         });
 
@@ -249,4 +247,4 @@ class Plane {
 
 }
 
-export { createCube, Plane } 
+export { Plane } 

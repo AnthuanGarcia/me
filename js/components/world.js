@@ -2,8 +2,8 @@ import { createScene } from './scene.js';
 import { createCamera } from './camera.js';
 import { createRenderer } from './renderer.js';
 import { Plane } from './cube.js';
-import { Resizer } from './resizer.js';
 import { FrustrumSize } from '../utils/constants.js';
+import { GlobalUniforms } from '../../assets/fragmentShader.js';
 
 class World {
 
@@ -92,35 +92,43 @@ class World {
         });
 
         window.addEventListener('resize', () => {
-            
+        
             this.setSize();
+            this.recalcPlaneSizes();
+            this.setItems();
 
         });
-    
-        //this._resizer = new Resizer(this._camera, this._renderer, this._planes);
 
+        window.addEventListener("mousemove", (e) => {
+
+            GlobalUniforms.u_mouse.value.set(e.clientX, e.clientY);
+
+        });
+
+        window.addEventListener("touchmove", (e) => {
+
+            GlobalUniforms.u_mouse.value.set(e.touches[0].clientX, e.touches[0].clientY);
+
+        });
+
+        GlobalUniforms.u_resolution.value.set(
+            this.canvasWidth,
+            this.canvasHeight
+        );
+    
         console.log("World is runnig");
     
     }
 
 
     render() {
-        // draw a single frame
-        //renderer.render(this._scene, this._camera);
 
-        /*const canvas = this._renderer.domElement;
-        const width = canvas.clientWidth;
-        const height = canvas.clientHeight;
-        const needResize = canvas.width !== width || canvas.height !== height;
-
-        if (needResize) {
-
-            this._resizer.setSize(this._camera, this._renderer);
-
-        }*/
+        let t = 0.0;
 
         this._renderer.setAnimationLoop(() => {
 
+            t += 0.01;
+            GlobalUniforms.u_time.value = t;
 
             this._renderer.render(this._scene, this._camera);
         });
@@ -174,15 +182,27 @@ class World {
 
     }
 
-    reloadIndex() {
+    recalcPlaneSizes() {
 
-        this.items = document.getElementById("items");
+        this._planes.forEach(p => {
+                
+            if (p.isFullScreen) {
+
+                p.uniforms.u_progress.value = 0;
+                p.UpdateViewSize();
+                p.fullScreen();
+
+            }
+
+        });
 
     }
 
     setItems() {
 
-        if (this.items) {
+        if (!this.isFullScreen) {
+
+            this.items = document.getElementById("items");
 
             this._planes.forEach((p, i) => {
 
@@ -209,16 +229,6 @@ class World {
 
         this._camera.right = FrustrumSize * aspect / 2;
         this._camera.left = FrustrumSize * aspect / -2;
-        //camera.top = FrustrumSize * aspect / 2;
-        //camera.bottom = FrustrumSize * aspect / -2;
-
-        /*planes.forEach(plane => {
-
-            plane.setMeshFromScreen();
-            
-        });*/
-
-        this.setItems();
 
         // update the size of the renderer AND the canvas
         this._renderer.setSize(window.innerWidth, window.innerHeight);
@@ -226,9 +236,11 @@ class World {
         this.canvasWidth = this._renderer.domElement.clientWidth;
         this.canvasHeight = this._renderer.domElement.clientHeight;
 
-        // Set the camera's aspect ratio
-        //camera.aspect = window.innerWidth / window.innerHeight;
-    
+        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent))
+            this.canvasWidth, this.canvasHeight = this.canvasHeight, this.canvasWidth;
+
+        GlobalUniforms.u_resolution.value.set(this.canvasWidth, this.canvasHeight);
+            
         // update the camera's frustum
         this._camera.updateProjectionMatrix();
         

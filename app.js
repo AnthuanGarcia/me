@@ -33,9 +33,10 @@ barba.init({
     ,{
         namespace: 'index',
         afterEnter(data) {
+            //world.setItems();
             window.scroll(0, world.valScroll);
-            world.reloadIndex();
         },
+        //afterLeave(data){ world.isIndex = false; },
         beforeLeave(data) {
 
             Array.from(
@@ -44,6 +45,7 @@ barba.init({
                 d => d.classList.add("noclicks")
             );
             
+            world.isFullScreen = true;
             world.shrinkPlanes();
 
         },
@@ -67,8 +69,10 @@ barba.init({
 
 barba.hooks.beforeEnter((data) => {
 
-    world.setScroll();
-    window.scroll(0, 0);
+    if (data.current.namespace !== 'index')
+        window.scroll(0, 0);
+    else
+        world.setScroll();
 
     ReplaceBody(data);
 
