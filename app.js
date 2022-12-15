@@ -6,22 +6,8 @@ const canvas = document.getElementById("webgl");
 const items = document.getElementById("items");
 const world = new World(canvas, items);
 
-/*gsap.ticker.add(() => world.render());
-
-gsap.ticker.fps(50);*/
-
 barba.init({
-    views: [{
-        namespace: 'about-page',
-        /*beforeLeave(data) {
-            //world.closePlane();
-            //world.expandPlanes();
-        },
-        beforeEnter(data) {
-            //world.setScroll();
-            //window.scroll(0, 0);
-        },*/
-    },
+    views: [
     {
         namespace: 'projects-page',
         beforeEnter(data) {
@@ -33,19 +19,10 @@ barba.init({
     ,{
         namespace: 'index',
         afterEnter(data) {
-            //world.setItems();
-            /*if (world.needRecalc) {
-
-                window.scroll(0, 0);
-                world.setItems();
-                world.needRecalc = false;
-                return;
-            }*/
 
             window.scroll(0, world.valScroll);
 
         },
-        //afterLeave(data){ world.isIndex = false; },
         beforeLeave(data) {
 
             Array.from(

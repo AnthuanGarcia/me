@@ -7,9 +7,6 @@ class Plane {
 
     constructor(world, rectHtml, i, percentage = 0.5, width = 1, height = 1) {
 
-        //this.canvasWidth = world._renderer.domElement.clientWidth;
-        //this.canvasHeight = world._renderer.domElement.clientHeight;
-
         this.scene = world._scene;
         this.camera = world._camera;
 
@@ -118,48 +115,7 @@ class Plane {
 
             if (intersects.length > 0 && !this.world.isFullScreen) {
 
-                /*const pixWidth = new THREE.Vector3(
-                    this.mesh.position.x - 1 * 0.5,
-                    this.mesh.position.y - 1 * 0.5,
-                    this.mesh.position.z
-                );
-
-                pixWidth.project(this.camera);
-
-                const planePixWidth = new THREE.Vector2(
-                    (1 + pixWidth.x) * 0.5 * this.canvasWidth,
-                    (1 - pixWidth.y) * 0.5 * this.canvasHeight
-                );
-                
-                const viewSize = this.getViewSize();
-
-                const widhtPlane = (planePixWidth.x * viewSize.width) / this.canvasWidth;
-                const heightPlane = (planePixWidth.y * viewSize.height) / this.canvasHeight;*/
-
-                /*const viewSize = this.getViewSize();
-
-                console.log(viewSize);
-
-                const xUnit = this.mesh.position.x - viewSize.width * 0.5;
-                const yUnit = this.mesh.position.y - viewSize.height * 0.5;
-
-                const x = xUnit + this.width * 0.5;
-                const y = -yUnit - this.height * 0.5;
-
-                this.mesh.position.x = x;
-                this.mesh.position.y = y;*/
-
-                /*this.uniforms.u_meshPosition.value.x = this.mesh.position.x;
-                this.uniforms.u_meshPosition.value.y = this.mesh.position.y;
-
-                this.uniforms.u_meshScale.value.x = this.width;
-                this.uniforms.u_meshScale.value.y = this.height;*/
-
-                //this.setMeshFromScreen();
-                
-                //this.world.isFullScreen = true;
                 this.isFullScreen = true;
-                
                 this.fullScreen();
                 
             }
@@ -224,7 +180,6 @@ class Plane {
         .timeline({ defaults: { duration: 1.2, ease: "expo.inOut" } })
         .to(this.uniforms.u_progress, {
             value: 1,
-            //onComplete: () => this.setMeshFromScreen()
             onStart: () => {
                 this.world.isAnimating = true;
                 this.mesh.position.z = 2;
@@ -235,9 +190,6 @@ class Plane {
     }
 
     getViewSize() {
-
-        //const fov = this.camera.fov * D2R;
-        //const height = Math.abs(this.camera.position.z * Math.tan(fov * 0.5) * 2);
 
         return { 
             width: this.camera.right * 2,

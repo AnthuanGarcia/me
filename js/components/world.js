@@ -23,8 +23,6 @@ class World {
         
         this.canvasWidth = this._renderer.domElement.clientWidth;
         this.canvasHeight = this._renderer.domElement.clientHeight;
-        //loop = new Loop(camera, scene, renderer, uniforms);
-        //container.append(renderer.domElement);
         
         Array.from(this.items.children)
         .forEach((e, i) => {
@@ -39,54 +37,7 @@ class World {
 
         })
 
-        //const {light, ambLight} = createLight();
-        //const plane = new Plane(this, 1, 1, items.children[0]);
-        //const plane2 = new Plane(this, 5, 3, items.children[0]);
-        //const plane3 = new Plane(this, 2, 2, items.children[0]);
-
-        //plane.setMesh();
-        //plane.setInteraction();
-
-        //plane2.setMesh();
-        //plane2.setInteraction();
-
-        //plane3.setMesh();
-        //plane3.setInteraction();
-
-        /*plane.mesh.position.set(
-            plane.mesh.position.x + 5,
-            0,
-            0
-        );
-
-        plane2.mesh.position.set(
-            plane.mesh.position.x - 5,
-            0,
-            0
-        );
-
-        plane3.mesh.position.set(
-            plane.mesh.position.x - 15,
-            3,
-            0
-        );*/
-
-        //this._planes.push(plane /*plane2, plane3*/);
-    
-        //this._scene.add(plane.mesh /*plane2.mesh, plane3.mesh*/);
-
         window.addEventListener("scroll", (e) => {
-
-            
-            /*this._planes.forEach((p) => {
-
-                if (!this.isAnimating) {
-
-                    //p.rectHtml = this.items.children[i];
-                    //p.setMeshFromScreen();
-
-                }
-            });*/
 
             this.setItems();
 
@@ -135,14 +86,6 @@ class World {
         });
 
 
-    }
-    
-    start() {
-        
-    }
-    
-    stop() {
-        
     }
 
     shrinkPlanes() {
@@ -208,7 +151,7 @@ class World {
     setItems() {
 
         if (!this.isFullScreen) {
-            
+
             this.items = document.getElementById("items");
 
             this._planes.forEach((p, i) => {
@@ -229,8 +172,6 @@ class World {
     }
 
     setSize() {
-
-        //const canvas = renderer.domElement;
 
         const aspect = window.innerWidth / window.innerHeight;
 
