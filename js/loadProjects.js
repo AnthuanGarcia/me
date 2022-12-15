@@ -1,9 +1,9 @@
 import { Projects } from "../assets/projects.js";
-import PhotoSwipeLightbox from "https://cdn.jsdelivr.net/npm/photoswipe@5.3.4/dist/photoswipe-lightbox.esm.min.js";
+import PhotoSwipeLightbox from "../libs/photoswipe-lightbox.esm.min.js";
 
 const pswModule = () =>
   import(
-    "https://cdn.jsdelivr.net/npm/photoswipe@5.3.4/dist/photoswipe.esm.min.js"
+    "../libs/photoswipe.esm.min.js"
   );
 
 const LoadProjects = () => {

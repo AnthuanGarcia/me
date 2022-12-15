@@ -34,7 +34,16 @@ barba.init({
         namespace: 'index',
         afterEnter(data) {
             //world.setItems();
+            /*if (world.needRecalc) {
+
+                window.scroll(0, 0);
+                world.setItems();
+                world.needRecalc = false;
+                return;
+            }*/
+
             window.scroll(0, world.valScroll);
+
         },
         //afterLeave(data){ world.isIndex = false; },
         beforeLeave(data) {

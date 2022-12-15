@@ -19,6 +19,7 @@ class World {
         this.items = items;
 
         this.valScroll = 0.0;
+        this.needRecalc = false;
         
         this.canvasWidth = this._renderer.domElement.clientWidth;
         this.canvasHeight = this._renderer.domElement.clientHeight;
@@ -184,24 +185,30 @@ class World {
 
     recalcPlaneSizes() {
 
-        this._planes.forEach(p => {
-                
-            if (p.isFullScreen) {
+        if (this.isFullScreen) {
 
-                p.uniforms.u_progress.value = 0;
-                p.UpdateViewSize();
-                p.fullScreen();
+            this._planes.forEach(p => {
+                    
+                if (p.isFullScreen) {
 
-            }
+                    p.uniforms.u_progress.value = 0;
+                    p.UpdateViewSize();
+                    p.fullScreen();
 
-        });
+                }
+
+            });
+
+            this.needRecalc = true;
+
+        }
 
     }
 
     setItems() {
 
         if (!this.isFullScreen) {
-
+            
             this.items = document.getElementById("items");
 
             this._planes.forEach((p, i) => {

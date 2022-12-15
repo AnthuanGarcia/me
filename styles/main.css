@@ -85,6 +85,10 @@ body {
   
 .content {
     width: 50vw;
+    padding: 0.5rem;
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    background-color: rgba(255, 255, 255, 0.0);
     /*height: 100%; this is optional if you want every slide to have same height as the highest one */
 }
 
@@ -122,10 +126,11 @@ body {
 }
 
 .open-imgs:hover {
-    color: blue;
+    color: rgb(217, 247, 47);
 }
 
 .heade {
+    width: 100%;
     display: flex;
     align-self: center;
     align-items: center;
@@ -147,6 +152,13 @@ body {
 
 .nameme {
 
+    /*background: black;
+    background-size: cover;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: invert(1);
+    mix-blend-mode: difference;*/
     font-size: 9rem;
     pointer-events: none;
 
@@ -154,14 +166,15 @@ body {
     top: 50%;
     left: 50%;
     margin-right: -50%;
-    transform: translate(-50%, -110%);
+    transform: translate(-50%, -130%);
     z-index: -1;
-    background-clip: text;
+
 }
 
 #items {
 
     display: grid;
+    overflow: hidden;
     justify-content: center;
     align-items: center;
     grid-template: repeat(10, 2rem);
@@ -311,6 +324,7 @@ body {
 
 .principal {
 
+    max-width: 100%;
     margin: 3rem;
 
 }
@@ -350,11 +364,15 @@ body {
 }
 
 .general-desc > span {
-    background-color: white;
+    padding: 0.5rem;
+    overflow-wrap: break-word;
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    background-color: rgba(255, 255, 255, 0.0);
 }
 
 .about-desc {
-    width: 50%;
+    width: 60%;
     margin-left: 10%;
 }
 
@@ -364,16 +382,18 @@ body {
 }
 
 .mail {
-    margin: 0;
-    position: absolute;
+    display: block;
+    position: relative;
     width: fit-content;
-    top: 45%;
-    font-size: 4rem;
+    margin: 0;
+    margin-top: 10rem;
+    font-size: 3rem;
     text-align: center;
     justify-content: center;
 }
 
 .mail > span {
+    overflow-wrap: break-word;
     padding: 0.25rem;
     background-color: white;
 }
@@ -382,8 +402,8 @@ body {
 
     .principal {
 
-        margin: 1rem;
-        width: auto;
+        margin: 0;
+        padding: 0.5rem 0.5rem 0.5rem 1rem;
     
     }
 
@@ -466,6 +486,7 @@ body {
 
     .wrapper-cont {
         display: block;
+        width: 100%;
     }
 
     .main-title {
@@ -473,7 +494,7 @@ body {
     }
 
     .controls {
-        width: 100vw;
+        width: 100%;
         display: inline-block;
 
         overflow-x: scroll;
@@ -490,13 +511,24 @@ body {
 
     .content {
         width: 70vw;
-        margin-left: 1rem;
+        margin-left: 1rem;        
     }
 
     .card-inside {
         animation: reveal 1.5s cubic-bezier(0.77, 0, 0.175, 1) 0.5s;
         animation-fill-mode: forwards;
         -webkit-animation-fill-mode: forwards;
+    }
+
+    .mail {
+        width: 100%;
+        height: auto;
+        inline-size: 100%;
+        font-size: 2.5rem;
+    }
+
+    .general-desc {
+        font-size: 1.35rem;
     }
 
 }
