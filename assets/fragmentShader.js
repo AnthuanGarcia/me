@@ -214,8 +214,8 @@ void main() {
 
 	float noi = smoothNoise(uv*8.0 + u_time*0.25) * 0.1;
 
-	uv = brickTile(uv, 2.25);
-	uv *= rot2D(-5.0 * D2R);
+	uv *= rot2D(-10.0 * D2R);
+	uv = brickTile(uv, 2.5);
 
 	//uv.y += u_time*0.05*sign(mod(floor(uv.x), 2.0) - 0.5);
 
