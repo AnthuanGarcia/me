@@ -4,11 +4,6 @@ export let GlobalUniforms = {
     u_mouse: { value: new THREE.Vector2() }
 }
 
-export const fragmentShader = `
-void main() {
-    gl_FragColor = vec4(1, 0, 1, 1);
-}`;
-
 export const FragmentShaders = [
 `
 uniform vec2 u_resolution;

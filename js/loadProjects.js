@@ -6,7 +6,7 @@ const pswModule = () =>
     "../libs/photoswipe.esm.min.js"
   );
 
-const LoadProjects = () => {
+function LoadProjects() {
   const styles = document.styleSheets[0];
   const wrapper = document.getElementsByClassName("wrapper-cont")[0];
   const controls = document.getElementsByClassName("controls")[0];
@@ -53,6 +53,7 @@ const LoadProjects = () => {
     /* Desc */
     const divDesc = document.createElement("div");
     divDesc.classList.add("title");
+    divDesc.classList.add("desc-project");
 
     const spanDesc = document.createElement("span");
     spanDesc.innerText = p.desc;
@@ -68,6 +69,9 @@ const LoadProjects = () => {
     const spanTools = document.createElement("span");
     const headTools = document.createElement("h2");
     const paraTools = document.createElement("p");
+
+    paraTools.classList.add("desc-project");
+    headTools.classList.add("title-tools");
 
     headTools.innerText = "Herramientas";
     paraTools.textContent += p.langs.join(", ");
@@ -90,6 +94,8 @@ const LoadProjects = () => {
     const spanImgs = document.createElement("span");
     const linkImgs = document.createElement("a");
     const headImgs = document.createElement("h3");
+
+    headImgs.classList.add("see-imgs-txt");
 
     linkImgs.href = p.imgs[0];
     linkImgs.classList.add("open-imgs");
