@@ -1,5 +1,3 @@
-html { height: 100%; }
-
 body {
     margin: 0;
     padding: 0;
@@ -313,10 +311,6 @@ body {
     animation: reveal 1.5s cubic-bezier(0.77, 0, 0.175, 1) 0.5s;*/
 }
 
-.text-size {
-    font-size: 3vw;
-}
-
 /*
 .card-title:hover {
     display: block;
@@ -430,6 +424,10 @@ body {
 
 @media (max-width: 800px) {
 
+    #items {
+        height: auto;
+    }
+
     .principal {
 
         margin: 0;
@@ -491,13 +489,13 @@ body {
 
     .card-inside {
 
-        font-size: 2.5rem;
+        font-size: 4vh;
     
     }
 
     .about-desc {
         width: 100%;
-        font-size: 1.25rem;
+        font-size: 1vw;
     }
 
     .nameme {
@@ -519,7 +517,28 @@ body {
     }
 
     .main-title {
+        font-size: 2.2vh;
         margin: 0;
+    }
+
+    .desc-project {
+        font-size: 2vh;
+    }
+
+    .title-size {
+        font-size: 3vh;
+    }
+
+    .title-tools {
+        font-size: 2.6vh;
+    }
+
+    .see-imgs-txt {
+        font-size: 2.4vh;
+    }
+
+    .arrow-back {
+        height: 3vh;
     }
 
     .controls {
@@ -553,11 +572,11 @@ body {
         width: 100%;
         height: auto;
         inline-size: 100%;
-        font-size: 2.5rem;
+        font-size: 2.8vw;
     }
 
     .general-desc {
-        font-size: 1.35rem;
+        font-size: 2.5vh;
     }
 
 }
