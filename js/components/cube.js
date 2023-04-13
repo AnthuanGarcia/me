@@ -100,9 +100,9 @@ class Plane {
 
     setInteraction() {
 
-        const rayCaster = new THREE.Raycaster();
+        const getIntersection = (e, action) => {
 
-        document.addEventListener("click", (e) => {
+            const rayCaster = new THREE.Raycaster();
 
             const mouse = new THREE.Vector2(
                 ( e.clientX  / this.world.canvasWidth ) * 2 - 1,
@@ -113,12 +113,34 @@ class Plane {
     
             const intersects = rayCaster.intersectObject(this.mesh);
 
-            if (intersects.length > 0 && !this.world.isFullScreen) {
+            action(intersects);
 
-                this.isFullScreen = true;
-                this.fullScreen();
+        };
+
+        document.addEventListener("click", (e) => {
+
+            getIntersection(e, (objects) => {
+
+                if (objects.length > 0 && !this.isFullScreen) {
+
+                    this.isFullScreen = true;
+                    this.fullScreen();
+
+                }
+
+            });
+
+        }, false);
+
+        document.addEventListener("mousemove", (e) => {
+            
+            getIntersection(e, (objects) => {
                 
-            }
+                if (!this.isFullScreen) {
+                    this.expandPlane(objects.length > 0 ? 0.02 : 0);
+                }
+
+            });
 
         }, false);
     
@@ -186,6 +208,16 @@ class Plane {
             },
             onComplete: () => this.world.isAnimating = false,
         });
+
+    }
+
+    expandPlane(expandFactor) {
+
+        gsap
+        .timeline({ defaults: { duration: 0.75, ease: "sine.out" } })
+        .to(this.uniforms.u_progress, {
+            value: expandFactor
+        })
 
     }
 
