@@ -49,7 +49,7 @@ body {
 }
 
 .line {
-    border-top: 2px solid black;
+    border-top: 0.45vh solid black;
     width: 0%;
     position: relative;
     transition: width 0.5s;
