@@ -92,7 +92,7 @@ export const Projects = [
 			"C#",
 			"Unity"
 		],
-		"desc": "El prototipo de un prototipo de un juego basado en grafos.",
+		"desc": "El prototipo de un prototipo de un juego de puzzles.",
 		"imgs": [
 			"../assets/img/u/s1.png",
 			"../assets/img/u/s2.png",
