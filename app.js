@@ -68,6 +68,12 @@ barba.hooks.beforeLeave((data) => {
 
     if (data.current.namespace === 'index') return;
 
+    Array.from(
+        document.getElementsByClassName("arrow-cont")
+    ).forEach(
+        a => a.classList.add("noclicks")
+    );
+
     world.closePlane();
     world.expandPlanes();
 
