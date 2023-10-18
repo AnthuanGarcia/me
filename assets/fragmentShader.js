@@ -320,13 +320,13 @@ void main() {
 
     vec3 col = vec3(0.9569, 0.7961, 0.4784);
 
-    uv.y += 0.1;
+    //uv.y -= 0.2;
 
 	vec3 ro = vec3(0, 0, -3);
 	vec3 rd = normalize(vec3(uv, 1.0));
 
-	float noi = smoothNoise(uv*7.0 + 0.25*u_time);
-	float r = 0.25 + 2.0*noi;
+	float noi = smoothNoise(uv*4.5 + 0.2*u_time);
+	float r = 0.5 + 1.5*noi;
 
 	vec2 cyl = cylIntersect(ro, rd, vec3(0), vec3(1, 0, 0), r);
 
